@@ -1,0 +1,24 @@
+{
+    "name": "helsingborg-stad/municipio-smoke-tests",
+    "description": "",
+    "type": "package",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thor Brink",
+            "email": "thor.brink@helsingborg.se"
+        }
+    ],
+    "repositories": [],
+    "require": {
+        "php": "^8.3",
+        "splitbrain/php-cli": "dev-master",
+        "codeception/codeception": "^5.2@dev",
+        "codeception/module-phpbrowser": "dev-master",
+        "codeception/module-asserts": "dev-master"
+    },
+    "scripts": {
+        "test": "codecept run Acceptance"
+    }
+}

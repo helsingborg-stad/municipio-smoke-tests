@@ -1,0 +1,54 @@
+name: 'Run Municipio Smoke Tests'
+description: 'A custom action to run Municipio Smoke tests'
+inputs:
+  sitemap-urls:
+    description: 'A comma-separated list of URLs to test'
+    required: true
+  shard:
+    description: 'The shard index to run'
+    default: 'false'
+    required: false
+  total-shards:
+    description: 'The total number of shards'
+    default: 'false'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout this repository
+      uses: actions/checkout@v4
+      with:
+        repository: helsingborg-stad/municipio-smoke-tests
+        token: ${{ github.token }}
+        ref: 'v2'
+
+    - name: Cache Composer dependencies
+      id: cache-deps
+      uses: actions/cache@v4
+      with:
+        path: |
+          vendor
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
+    - name: Setup PHP with composer v2.
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer install --no-progress --no-suggest --no-interaction
+      shell: bash
+
+    - name: Run Municipio Smoke tests
+      run: |
+        if [ "${{ inputs.shard }}" != "false" ] && [ "${{ inputs.total-shards }}" != "false" ]; then
+          composer test -- --shard=${{ inputs.shard }}/${{ inputs.total-shards }}
+        else
+          composer test
+        fi
+      shell: bash
+      env:
+        SITEMAP_URLS: ${{ inputs.sitemap-urls }}

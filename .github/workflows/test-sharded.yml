@@ -1,0 +1,22 @@
+name: Run Municipio Smoke Tests sharded
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+        total-shards: [4]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Municipio Smoke Tests
+        uses: helsingborg-stad/municipio-smoke-tests@v1
+        with:
+          sitemap-urls: ${{ vars.SITEMAP_URLS }}
+          shard: ${{ matrix.shard }}
+          total-shards: ${{ matrix.total-shards }}
