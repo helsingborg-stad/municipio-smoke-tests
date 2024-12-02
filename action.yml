@@ -20,7 +20,7 @@ runs:
       with:
         repository: helsingborg-stad/municipio-smoke-tests
         token: ${{ github.token }}
-        ref: 'v2'
+        ref: 'v1'
 
     - name: Cache Composer dependencies
       id: cache-deps
