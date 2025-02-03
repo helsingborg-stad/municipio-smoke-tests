@@ -27,6 +27,7 @@ final class PageIsOKCest
         $I->amOnUrl($example[0]);
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->dontSee('A view rendering issue has occurred');
+        $I->dontSeeInSource('<!-- Date component: Invalid date -->');
     }
 
     protected function pageProvider(): array
