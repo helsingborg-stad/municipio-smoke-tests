@@ -31,5 +31,5 @@ jobs:
 
       - name: Run Test
         run: composer run test:local:serve && 
-             composer run test:local:run -- --shard=${{ inputs.shard }}/${{ inputs.total-shards }} &&
+             composer run test:local:run -- --shard=${{ matrix.shard }}/${{ matrix.total-shards }} &&
              composer run test:local:stop
