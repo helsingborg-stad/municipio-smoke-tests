@@ -10,8 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+
     steps:
-      - name: Run Municipio Smoke Tests
-        uses: helsingborg-stad/municipio-smoke-tests@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP 
+        uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          sitemap-urls: ${{ vars.SITEMAP_URLS }}
+          php-version: 8.3
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer i
+
+      - name: Run Test
+        run: composer run test:local

@@ -19,6 +19,14 @@
         "codeception/module-asserts": "dev-master"
     },
     "scripts": {
-        "test": "codecept run Acceptance"
+        "test": "codecept run Acceptance",
+        "test:local:serve": "nohup php -S localhost:8000 -t fixtures/  & echo $! > server.pid",
+        "test:local:run": "SITEMAP_URLS=http://localhost:8000/sitemap.xml codecept run Acceptance",
+        "test:local:stop": "kill $(cat server.pid)",
+        "test:local": [
+            "@test:local:serve",
+            "@test:local:run",
+            "@test:local:stop"
+        ]
     }
 }
