@@ -13,10 +13,24 @@ jobs:
         shard: [1, 2, 3, 4]
         total-shards: [4]
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP 
+        uses: shivammathur/setup-php@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          php-version: 8.3 
+
+      - name: Serve test files
+        run: composer run test:local:serve
+
       - name: Run Municipio Smoke Tests
         uses: helsingborg-stad/municipio-smoke-tests@v1
         with:
-          sitemap-urls: ${{ vars.SITEMAP_URLS }}
+          sitemap-urls: http://localhost:8000/sitemap.xml
           shard: ${{ matrix.shard }}
           total-shards: ${{ matrix.total-shards }}

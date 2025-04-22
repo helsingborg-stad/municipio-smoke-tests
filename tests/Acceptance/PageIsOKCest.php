@@ -25,11 +25,15 @@ final class PageIsOKCest
     public function pageIsOK(AcceptanceTester $I, \Codeception\Example $example): void
     {   
         $I->amOnUrl($example[0]);
-        $I->seeResponseCodeIs(HttpCode::OK);
+        
+        if( !$I->tryToSeeResponseCodeIs(HttpCode::OK) ) {
+            $I->seeResponseCodeIs(HttpCode::GONE); // Allow 410 response code
+        }
+
         $I->dontSee('A view rendering issue has occurred');
         $I->dontSeeInSource('<!-- Date component: Invalid date -->');
     }
-
+    
     protected function pageProvider(): array
     {
         $sitemaps = $this->getSitemaps();

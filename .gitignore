@@ -1,2 +1,4 @@
 /vendor/
 /tests/_output/
+server.pid
+nohup.out
